@@ -1,0 +1,58 @@
+
+    float moveSpeed;
+    float HorizontalInput;
+    float VerticalInput;
+    float jumpHeight;
+    Rigidbody playerRB;
+    bool whentoJump;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        //setting moveSpeed variable to 5f
+        moveSpeed = 5f;
+
+        //
+        jumpHeight = 10f;
+
+        //
+        playerRB = GetComponent<Rigidbody>();
+
+        whentoJump = false;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        HorizontalInput = Input.GetAxis("Horizontal");
+        VerticalInput= Input.GetAxis("Vertical");
+        transform.Translate(HorizontalInput * moveSpeed * Time.deltaTime, 0, VerticalInput * moveSpeed * Time.deltaTime);
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            playerRB.AddForce(jumpHeight * Vector3.up, ForceMode.Impulse);
+            //transform.Translate(0, 10jumpHeight* Time.deltaTime,0);
+        }
+
+
+
+        //
+        if (Input.GetButtonDown("Jump")  && whentoJump == true)
+        {
+            //
+            playerRB.AddForce(jumpHeight * Vector3.up, ForceMode.Impulse);
+            whentoJump = false;
+
+        }
+    }
+    public void onCollisionEnter(Collision other)
+    {
+        if(other.gameObject.tag == "Ground")
+        {
+            whentoJump = true;
+
+        }
+
+    }
+ 
+
